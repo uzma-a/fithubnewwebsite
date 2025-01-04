@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Outfit:wght@100..900&display=swap');
+
+.main-container{
+  background: linear-gradient(black, #014e58, black);
+}
+
+#logo {
+  font-size: 3rem;
+  font-family: 'Brush Script MT', cursive;
+}
