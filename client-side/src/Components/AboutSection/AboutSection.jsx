@@ -53,7 +53,7 @@ const AboutSection = () => {
             </h3>
             <ul className="text-lg text-gray-300 list-disc pl-6 space-y-4">
               <li>
-                <span className="text-cyan-500 font-bold">Expert Trainers:</span> Certified professionals passionate about your success.
+                <span className="text-cyan-500 font-bold">Expert Trainers:</span>Certified professionals passionate about your success.
               </li>
               <li>
                 <span className="text-cyan-500 font-bold">State-of-the-Art Equipment:</span> Top-tier, regularly maintained gym equipment.
