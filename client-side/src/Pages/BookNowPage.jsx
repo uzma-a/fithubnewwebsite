@@ -37,7 +37,7 @@ const BookNowPage = () => {
     const currency = "INR";
 
     try {
-        const response = await fetch("http://localhost:5000/order", {
+        const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/order`, {
             method: "POST",
             body: JSON.stringify({
                 amount, // Correct amount in rupees

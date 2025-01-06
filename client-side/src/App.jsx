@@ -20,7 +20,7 @@ import {Toaster} from 'react-hot-toast';
 import { UserContext, UserContextProvider } from '../context/userContext';
 import Dashboard from './Pages/Dashboard';
 
-axios.defaults.baseURL = 'http://localhost:5000'
+axios.defaults.baseURL = `${import.meta.env.VITE_REACT_APP_BACKEND_URL}`
 axios.defaults.withCredentials = true
 
 function App() {
