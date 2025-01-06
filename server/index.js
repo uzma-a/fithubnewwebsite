@@ -9,7 +9,7 @@ const crypto = require('crypto');
 const app = express();
 
 // Database connection
-mongoose.connect(process.env.Mongo_URL)
+mongoose.connect(process.env.VITE_MONGO_URL)
     .then(() => console.log("Database Connected"))
     .catch((err) => console.log("Database not connected", err));
 
@@ -26,8 +26,8 @@ app.use('/', require('./routes/authRoutes'));
 app.post("/order", async (req, res) => {
     try {
         const razorpay = new Razorpay({
-            key_id: process.env.RAZORPAY_KEY_ID,
-            key_secret: process.env.RAZORPAY_SECRET,
+            key_id: process.env.VITE_RAZORPAY_KEY_ID,
+            key_secret: process.env.VITE_RAZORPAY_SECRET,
         });
 
         const { amount, currency, receipt } = req.body; // Amount is expected in rupees
@@ -60,7 +60,7 @@ app.post('/order/validate', async (req, res) => {
             return res.status(400).json({ message: "Missing payment details" });
         }
 
-        const sha = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET);
+        const sha = crypto.createHmac("sha256", process.env.VITE_RAZORPAY_SECRET)
         sha.update(`${razorpay_order_id}|${razorpay_payment_id}`);
         const digest = sha.digest("hex");
 
