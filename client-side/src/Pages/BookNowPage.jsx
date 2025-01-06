@@ -185,7 +185,7 @@ const BookNowPage = () => {
               <br />
               Other details will be sent to your email.
             </p>
-            <button
+            <button type='submit'
               onClick={() => setShowPopup(false)}
               className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
