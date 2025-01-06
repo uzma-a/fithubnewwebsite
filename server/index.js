@@ -26,7 +26,7 @@ app.use('/', require('./routes/authRoutes'));
 app.post("/order", async (req, res) => {
     try {
         const razorpay = new Razorpay({
-            key_id: import.meta.env.VITE_RAZORPAY_KEY_ID,
+            key_id: rzp_test_V6vIJstSiHeUVu,
             key_secret: process.env.RAZORPAY_SECRET,
         });
 
