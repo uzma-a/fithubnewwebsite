@@ -17,7 +17,7 @@ mongoose.connect(process.env.MONGO_URL)
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({ origin: 'https://fithub-new-frontend.onrender.com/', credentials: true }));
 
 
 // Import routes (if any)
