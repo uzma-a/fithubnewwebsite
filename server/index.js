@@ -17,7 +17,8 @@ mongoose.connect(process.env.MONGO_URL)
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+
 
 // Import routes (if any)
 app.use('/', require('./routes/authRoutes'));
@@ -26,7 +27,7 @@ app.use('/', require('./routes/authRoutes'));
 app.post("/order", async (req, res) => {
     try {
         const razorpay = new Razorpay({
-            key_id: rzp_test_V6vIJstSiHeUVu,
+            key_id: "rzp_test_V6vIJstSiHeUVu",
             key_secret: process.env.RAZORPAY_SECRET,
         });
 
