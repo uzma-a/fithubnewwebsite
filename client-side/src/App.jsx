@@ -20,8 +20,6 @@ import {Toaster} from 'react-hot-toast';
 import { UserContext, UserContextProvider } from '../context/userContext';
 import Dashboard from './Pages/Dashboard';
 
-axios.defaults.baseURL = `${import.meta.env.VITE_REACT_APP_BACKEND_URL}`
-axios.defaults.withCredentials = true
 
 function App() {
   // Initialize AOS
@@ -48,7 +46,7 @@ function App() {
     <UserContextProvider>
     <BrowserRouter>
       <div className="App">
-      <Toaster position='bottom-right' toastOptions={{duration: 2000}} />
+      <Toaster position='top-right' toastOptions={{duration: 2000}} />
         {isLoading ? (
           <Loading />
         ) : (

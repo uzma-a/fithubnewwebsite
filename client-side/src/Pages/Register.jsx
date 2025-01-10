@@ -4,33 +4,34 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import bg_Img from "../assets/GymHeroBg.jpg";
 import axios from 'axios'
-import {toast} from 'react-hot-toast'
+import { toast } from 'react-hot-toast'
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-    const navigate = useNavigate()
-    const [data, setData] = useState({
-        name: '',
-        email: '',
-        password: '',
-    })
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [data, setData] = useState({})
 
-    const registerUser = async(e) => {
+    const navigate = useNavigate()
+    
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        const {name, email, password} = data
+
         try {
-            const {data} = await axios.post('/register', {
-                name, email, password
-            })
-            if(data.error){
+            const response = await axios.post('http://localhost:5005/register', { name, email, password })
+            const { data } = response
+
+            if (data.error) {
                 toast.error(data.error)
-            }else{
+            } else {
                 setData({})
-                toast.success('Login Successful. Welcome!')
+                toast.success("Registration Successful! You can now login.")
                 navigate('/login')
             }
         } catch (error) {
-            console.log(error)
+            toast.error("An error occurred during registration.")
+            console.error(error)
         }
     }
 
@@ -64,21 +65,19 @@ const Register = () => {
                 <h1 className="text-3xl sm:text-4xl font-semibold mb-6 text-center text-white">
                     SignUp
                 </h1>
-                <form onSubmit={registerUser} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
 
                     <div>
                         <label htmlFor="name" className="block text-xl font-medium text-gray-300">Name</label>
-                        <input type="text" placeholder="enter your name..." className="w-full h-12 bg-gray-600 text-white mb-3 border-none outline-none rounded-sm font-base text-lg px-4 py-2"
-                            value={data.name} onChange={(e) => setData({ ...data, name: e.target.value })}
-                        />
+                        <input name="name" onChange={(e) => setName(e.target.value)} type="text" placeholder="enter your name..." className="w-full h-12 bg-gray-600 text-white mb-3 border-none outline-none rounded-sm font-base text-lg px-4 py-2" />
                     </div>
                     <div>
                         <label htmlFor="email" className="block text-xl font-medium text-gray-300">Email</label>
                         <input
                             type="email"
                             placeholder="enter email..."
+                            name="email" onChange={(e) => setEmail(e.target.value)}
                             className="w-full h-12 bg-gray-600 text-white mb-3 border-none outline-none rounded-sm font-base text-lg px-4 py-2"
-                            value={data.email} onChange={(e) => setData({ ...data, email: e.target.value })}
                         />
                     </div>
                     <div>
@@ -86,12 +85,17 @@ const Register = () => {
                         <input
                             type="password"
                             placeholder="enter password..."
+                            name="password" onChange={(e) => setPassword(e.target.value)}
                             className="w-full h-12 bg-gray-600 text-white mb-3 border-none outline-none rounded-sm font-base text-lg px-4 py-2"
-                            value={data.password} onChange={(e) => setData({ ...data, password: e.target.value })}/>
+                        />
                     </div>
                     <button type="submit" className="w-full border-none outline-none p-4 bg-cyan-800 text-white rounded-md text-lg font-medium mt-2 cursor-pointer">Submit</button>
                 </form>
 
+                <div className="mt-3 gap-1 flex">
+                    <p className="font-medium">Already have an Account ?</p>
+                    <Link className="text-blue-700" to="/login">Login</Link>
+                </div>
             </div>
         </div>
     );

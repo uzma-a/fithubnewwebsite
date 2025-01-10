@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/userContext";
 
 export default function Dashboard() {
-    const { user } = useContext(UserContext);
+    
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -19,11 +19,11 @@ export default function Dashboard() {
             <h1 className="text-center text-4xl md:text-5xl font-bold tracking-wide mb-6">
                 Dashboard
             </h1>
-            {!!user && (
+            
                 <h2 className="text-center text-2xl md:text-3xl bg-gradient-to-r font-semibold from-gray-200 to-sky-500 bg-clip-text text-transparent">
                     Hi, Welcome to Fithub!
                 </h2>
-            )}
+            
         </div>
     );
 }
