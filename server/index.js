@@ -11,7 +11,11 @@ const PORT = process.env.PORT || 5005;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+<<<<<<< HEAD
 app.use(cors());
+=======
+app.use(cors({ origin: 'https://fithub-new-frontend.onrender.com/', credentials: true }));
+>>>>>>> 9fd03a9b8df91f5ff550cf26b10f97de5e46f1e4
 
 // MongoDB connection
 mongoose.connect('mongodb://127.0.0.1:27017/gymmember');
