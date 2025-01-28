@@ -81,7 +81,7 @@ const BookNowPage = () => {
         const body = {
           ...response,
         };
-        const validateRes = await fetch("https://fithub-backend.vercel.app/order/validate", {
+        const validateRes = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/order/validate`, {
           method: 'POST',
           body: JSON.stringify(body),
           headers: {
