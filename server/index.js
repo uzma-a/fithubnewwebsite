@@ -15,9 +15,9 @@ const mongoURI = process.env.MONGO_URI
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({
-  origin: 'https://fithub-website.vercel.app/', // Frontend URL
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: 'https://fithub-website.vercel.app', // Frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'], // Customize headers if needed
 }));
 
 
