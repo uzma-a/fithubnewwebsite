@@ -36,7 +36,7 @@ const Register = () => {
 
         try {
             const response = await axios.post(
-                "http://localhost:5005/register",
+                "https://fithub-backend.vercel.app/register",
                 { name, email, password }
             );
             const { data } = response;
