@@ -21,7 +21,7 @@ const LoginSignup = () => {
       return;
     }
 
-    axios.post('https://your-backend-project-name.vercel.app/login', { email, password })
+    axios.post('https://fithub-backend.vercel.app/login', { email, password })
 
       .then((response) => {
         if (response.status === 200) {
