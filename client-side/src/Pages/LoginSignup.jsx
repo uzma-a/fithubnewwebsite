@@ -1,38 +1,55 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import bg_Img from "../assets/GymHeroBg.jpg";
-import axios from 'axios'
-import { toast } from 'react-hot-toast'
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 const LoginSignup = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    axios.post('http://localhost:5005/login', { email, password })
-    .then(response => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    axios
+      .post("http://localhost:5005/login", { email, password })
+      .then((response) => {
         if (response.status === 200) {
-            toast.success("Login Successfully");
-            navigate('/');
+          toast.success("Login Successfully");
+          // Store the token in localStorage
+          localStorage.setItem("userToken", response.data.token);
+          navigate("/");
         }
-    })
-    .catch(error => {
-        if (error.response && error.response.status === 401) {
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status === 401) {
             toast.error("Incorrect password. Please try again.");
-        } else if (error.response && error.response.status === 404) {
-            toast.error("User not exist! Please signup for login.");
-        } else {
+          } else if (error.response.status === 404) {
+            toast.error("User not found! Please signup to login.");
+          } else {
             toast.error("Something went wrong. Please try again later.");
+          }
+        } else {
+          toast.error("Network error. Please check your connection.");
         }
-    });
-  }
+      });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("userToken");
+    navigate("/login");
+  };
 
   return (
     <div
@@ -54,7 +71,10 @@ const LoginSignup = () => {
             FitHub
           </div>
         </Link>
-        <button className="py-1 px-4 bg-cyan-800 font-bold text-lg rounded-md shadow-[-7px_7px_0px_#fff] border border-transparent hover:text-gray-300">
+        <button
+          onClick={handleLogout}
+          className="py-1 px-4 bg-cyan-800 font-bold text-lg rounded-md shadow-[-7px_7px_0px_#fff] border border-transparent hover:text-gray-300"
+        >
           Logout
         </button>
       </div>
@@ -65,35 +85,59 @@ const LoginSignup = () => {
           Login
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
-
-
+          {/* Email Input */}
           <div>
-            <label htmlFor="email" className="block text-xl font-medium text-gray-300">Email</label>
+            <label htmlFor="email" className="block text-xl font-medium text-gray-300">
+              Email
+            </label>
             <input
               type="email"
-              placeholder="enter email..."
-              name="email" onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter email..."
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full h-12 bg-gray-600 text-white mb-3 border-none outline-none rounded-sm font-base text-lg px-4 py-2"
+            />
+          </div>
 
-            />
-          </div>
+          {/* Password Input */}
           <div>
-            <label htmlFor="password" className="block text-xl font-medium text-gray-300">Password</label>
+            <label htmlFor="password" className="block text-xl font-medium text-gray-300">
+              Password
+            </label>
             <input
-              type="password"
-              placeholder="enter password..."
-              name="password" onChange={(e) => setPassword(e.target.value)}
-              className="w-full h-12 bg-gray-600 text-white mb-3 border-none outline-none rounded-sm font-base text-lg px-4 py-2"
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter password..."
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full h-12 bg-gray-600 text-white mb-1 border-none outline-none rounded-sm font-base text-lg px-4 py-2"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="text-sm text-gray-400 mt-1"
+            >
+              {showPassword ? "Hide" : "Show"} Password
+            </button>
           </div>
-          <button type="submit" className="w-full border-none outline-none p-4 bg-cyan-800 text-white rounded-md text-lg font-medium mt-2 cursor-pointer">Login</button>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full border-none outline-none p-4 bg-cyan-800 text-white rounded-md text-lg font-medium mt-2 cursor-pointer"
+          >
+            Login
+          </button>
         </form>
 
+        {/* Signup Link */}
         <div className="mt-3 gap-1 flex">
-          <p className="font-medium">New to Fithub ?</p>
-          <Link className="text-blue-700" to="/register">Signup</Link>
+          <p className="font-medium">New to FitHub?</p>
+          <Link className="text-blue-700" to="/register">
+            Signup
+          </Link>
         </div>
-
       </div>
     </div>
   );
