@@ -15,14 +15,13 @@ const mongoURI = process.env.MONGO_URI
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Use this to set CORS headers
-const corsOptions = {
-  origin: 'https://fithub-website.vercel.app', // The frontend domain
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-};
-
-app.use(cors(corsOptions));  // Apply the CORS middleware to your app
+app.use(cors(
+  {
+    origin:['https://fithub-website.vercel.app/'],
+    methods:["POST", "GET],
+    credentials: true         
+  }
+));  
 
 
 // MongoDB connection
