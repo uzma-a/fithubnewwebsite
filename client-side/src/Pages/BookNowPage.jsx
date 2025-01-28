@@ -55,7 +55,7 @@ const BookNowPage = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false); // State to control popup visibility
 
   const paymentHandler = async (e) => {
-    const response = await fetch('https://fithub-backend.vercel.app/order', {
+    const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/order`, {
       method: 'POST',
       body: JSON.stringify({
         amount,
