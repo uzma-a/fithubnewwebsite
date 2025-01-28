@@ -14,7 +14,9 @@ const mongoURI = process.env.MONGO_URI
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+app.use(cors({
+  origin: 'https://fithub-website.vercel.app/', // Frontend URL
+}));
 
 // MongoDB connection
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
