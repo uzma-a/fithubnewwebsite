@@ -1,39 +1,57 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import bg_Img from "../assets/GymHeroBg.jpg";
-import axios from 'axios'
-import { toast } from 'react-hot-toast'
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [data, setData] = useState({})
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
-    const navigate = useNavigate()
-    
+    const validateEmail = (email) =>
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    const validatePassword = (password) =>
+        password.length >= 6;
+
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+
+        if (!name || !email || !password) {
+            toast.error("All fields are required.");
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            toast.error("Invalid email format.");
+            return;
+        }
+
+        if (!validatePassword(password)) {
+            toast.error("Password must be at least 6 characters.");
+            return;
+        }
 
         try {
-            const response = await axios.post('http://localhost:5005/register', { name, email, password })
-            const { data } = response
+            const response = await axios.post(
+                "http://localhost:5005/register",
+                { name, email, password }
+            );
+            const { data } = response;
 
             if (data.error) {
-                toast.error(data.error)
+                toast.error(data.error);
             } else {
-                setData({})
-                toast.success("Registration Successful! You can now login.")
-                navigate('/login')
+                toast.success("Registration Successful! You can now login.");
+                navigate("/");
             }
         } catch (error) {
-            toast.error("An error occurred during registration.")
-            console.error(error)
+            toast.error("An error occurred during registration.");
+            console.error(error);
         }
-    }
+    };
 
     return (
         <div
@@ -42,59 +60,85 @@ const Register = () => {
                 backgroundImage: `url(${bg_Img})`,
             }}
         >
-            {/* Toastify Container */}
-            <ToastContainer />
-
-            {/* Dim Overlay */}
             <div className="absolute inset-0 bg-black bg-opacity-80"></div>
 
-            {/* Logo and Logout Button */}
             <div className="flex items-center justify-between mb-6 px-6 md:px-20 relative z-10">
                 <Link to="/">
-                    <div id="logo-style" className="text-4xl sm:text-3xl font-bold text-white cursor-pointer">
+                    <div
+                        id="logo-style"
+                        className="text-4xl sm:text-3xl font-bold text-white cursor-pointer"
+                    >
                         FitHub
                     </div>
                 </Link>
-                <button className="py-1 px-4 bg-cyan-800 font-bold text-lg rounded-md shadow-[-7px_7px_0px_#fff] border border-transparent hover:text-gray-300">
-                    Logout
-                </button>
             </div>
 
-            {/* Form Container */}
             <div className="w-full sm:w-96 md:w-[420px] bg-[rgba(53,49,110,0.16)] p-6 sm:p-8 md:p-10 mx-auto relative z-10">
                 <h1 className="text-3xl sm:text-4xl font-semibold mb-6 text-center text-white">
                     SignUp
                 </h1>
                 <form onSubmit={handleSubmit} className="space-y-4">
-
                     <div>
-                        <label htmlFor="name" className="block text-xl font-medium text-gray-300">Name</label>
-                        <input name="name" onChange={(e) => setName(e.target.value)} type="text" placeholder="enter your name..." className="w-full h-12 bg-gray-600 text-white mb-3 border-none outline-none rounded-sm font-base text-lg px-4 py-2" />
+                        <label
+                            htmlFor="name"
+                            className="block text-xl font-medium text-gray-300"
+                        >
+                            Name
+                        </label>
+                        <input
+                            name="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            type="text"
+                            placeholder="enter your name..."
+                            className="w-full h-12 bg-gray-600 text-white mb-3 border-none outline-none rounded-sm font-base text-lg px-4 py-2"
+                        />
                     </div>
                     <div>
-                        <label htmlFor="email" className="block text-xl font-medium text-gray-300">Email</label>
+                        <label
+                            htmlFor="email"
+                            className="block text-xl font-medium text-gray-300"
+                        >
+                            Email
+                        </label>
                         <input
                             type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder="enter email..."
-                            name="email" onChange={(e) => setEmail(e.target.value)}
+                            name="email"
                             className="w-full h-12 bg-gray-600 text-white mb-3 border-none outline-none rounded-sm font-base text-lg px-4 py-2"
                         />
                     </div>
                     <div>
-                        <label htmlFor="password" className="block text-xl font-medium text-gray-300">Password</label>
+                        <label
+                            htmlFor="password"
+                            className="block text-xl font-medium text-gray-300"
+                        >
+                            Password
+                        </label>
                         <input
                             type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             placeholder="enter password..."
-                            name="password" onChange={(e) => setPassword(e.target.value)}
+                            name="password"
                             className="w-full h-12 bg-gray-600 text-white mb-3 border-none outline-none rounded-sm font-base text-lg px-4 py-2"
                         />
                     </div>
-                    <button type="submit" className="w-full border-none outline-none p-4 bg-cyan-800 text-white rounded-md text-lg font-medium mt-2 cursor-pointer">Submit</button>
+                    <button
+                        type="submit"
+                        className="w-full border-none outline-none p-4 bg-cyan-800 text-white rounded-md text-lg font-medium mt-2 cursor-pointer"
+                    >
+                        Submit
+                    </button>
                 </form>
 
                 <div className="mt-3 gap-1 flex">
                     <p className="font-medium">Already have an Account ?</p>
-                    <Link className="text-blue-700" to="/login">Login</Link>
+                    <Link className="text-blue-700" to="/login">
+                        Login
+                    </Link>
                 </div>
             </div>
         </div>
