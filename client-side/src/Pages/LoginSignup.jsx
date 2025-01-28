@@ -21,8 +21,13 @@ const LoginSignup = () => {
       return;
     }
 
+<<<<<<< HEAD
     axios
       .post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/login`, { email, password })
+=======
+    axios.post('https://fithub-backend.vercel.app/login', { email, password })
+
+>>>>>>> a292ae0a578c38bd1462382cecd4d88f05031f20
       .then((response) => {
         if (response.status === 200) {
           toast.success("Login Successfully");
