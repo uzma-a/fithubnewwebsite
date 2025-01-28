@@ -21,8 +21,8 @@ const LoginSignup = () => {
       return;
     }
 
-    axios
-      .post("http://localhost:5005/login", { email, password })
+    axios.post('https://your-backend-project-name.vercel.app/login', { email, password })
+
       .then((response) => {
         if (response.status === 200) {
           toast.success("Login Successfully");
