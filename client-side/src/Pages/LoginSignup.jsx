@@ -22,7 +22,7 @@ const LoginSignup = () => {
     }
 
     axios
-      .post("http://localhost:5005/login", { email, password })
+      .post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/login`, { email, password })
       .then((response) => {
         if (response.status === 200) {
           toast.success("Login Successfully");
