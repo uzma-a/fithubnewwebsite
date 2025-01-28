@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 // MongoDB connection
-mongoose.connect('mongodb://127.0.0.1:27017/gymmember');
+mongoose.connect('mongodb://localhost:5173/gymmember');
 
 // Login functionality
 app.post('/login', (req, res) => {
