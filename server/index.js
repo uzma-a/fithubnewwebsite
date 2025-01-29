@@ -12,7 +12,7 @@ const app = express();
 const PORT = process.env.PORT;
 const mongoURI = process.env.MONGO_URI
 const corsOptions = {
-  origin: 'https://fithub-frontend-phi.vercel.app/', // Replace with your deployed frontend URL
+  origin: 'https://fithub-frontend-bcw3bcudi-uzma-as-projects.vercel.app', // Replace with your deployed frontend URL
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type'],
 };
