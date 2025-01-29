@@ -61,7 +61,7 @@ const BookNowPage = () => {
   const paymentHandler = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:5005/order", {
+    const response = await fetch("https://fithub-backend.vercel.app/order", {
       method: "POST",
       body: JSON.stringify({
         amount,
@@ -86,7 +86,7 @@ const BookNowPage = () => {
       handler: async function (response) {
         const body = { ...response };
 
-        const validateRes = await fetch("http://localhost:5005/order/validate", {
+        const validateRes = await fetch("https://fithub-backend.vercel.app//order/validate", {
           method: "POST",
           body: JSON.stringify(body),
           headers: {
