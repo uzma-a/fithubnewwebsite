@@ -70,9 +70,7 @@ const MembershipPlans = () => {
                 </li>
               ))}
             </ul>
-            <Link
-              to={`/plans/booking-a-plan?name=${encodeURIComponent(plan.name)}`}
-            >
+            <Link to={`/plans/booking-a-plan?name=${encodeURIComponent(plan.name)}`}>
               <button className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold  hover:from-blue-500 hover:to-cyan-500 transition-all">
                 Book Now
               </button>

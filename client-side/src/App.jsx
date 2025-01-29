@@ -68,7 +68,7 @@ function App() {
               }
             />
             {/* Other Pages */}
-            <Route path="/login" element={<LoginSignup />} />
+            {/* <Route path="/login" element={<LoginSignup />} /> */}
             <Route path='/register' element={<Register />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/service" element={<ServicesPage />} />
