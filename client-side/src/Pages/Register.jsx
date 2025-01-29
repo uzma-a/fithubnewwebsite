@@ -36,7 +36,7 @@ const Register = () => {
 
         try {
             const response = await axios.post(
-                `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/register`,
+                'http://localhost:5005/register',
                 { name, email, password }
             );
             const { data } = response;
