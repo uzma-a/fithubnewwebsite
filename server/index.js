@@ -11,10 +11,16 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT;
 const mongoURI = process.env.MONGO_URI
+const corsOptions = {
+  origin: 'https://fithub-frontend-phi.vercel.app/', // Replace with your deployed frontend URL
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type'],
+};
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+app.use(cors(corsOptions));
 
 // MongoDB connection
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
