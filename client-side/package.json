@@ -1,7 +1,6 @@
 {
   "name": "gym-website",
   "private": true,
-  "proxy": "https://fithub-backend.vercel.app",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
