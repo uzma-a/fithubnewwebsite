@@ -1,41 +1,45 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import axios from "axios";
 import bg_Img from "../assets/GymHeroBg.jpg";
+import axios from "axios";
 
 const Register = () => {
-    const [formData, setFormData] = useState({ name: "", email: "", password: "" });
-    const [loading, setLoading] = useState(false);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+    const validateEmail = (email) =>
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    const validatePassword = (password) =>
+        password.length >= 6;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const { name, email, password } = formData;
 
         if (!name || !email || !password) {
             toast.error("All fields are required.");
             return;
         }
 
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        if (!validateEmail(email)) {
             toast.error("Invalid email format.");
             return;
         }
 
-        if (password.length < 6) {
+        if (!validatePassword(password)) {
             toast.error("Password must be at least 6 characters.");
             return;
         }
 
-        setLoading(true);
         try {
-            const { data } = await axios.post("http://localhost:5001/register", formData);
+            const response = await axios.post(
+                'http://localhost:5001/register',
+                { name, email, password }
+            );
+            const { data } = response;
 
             if (data.error) {
                 toast.error(data.error);
@@ -45,20 +49,25 @@ const Register = () => {
             }
         } catch (error) {
             toast.error("An error occurred during registration.");
-        } finally {
-            setLoading(false);
+            console.error(error);
         }
     };
 
     return (
-        <div className="h-screen flex flex-col bg-cover bg-center bg-no-repeat bg-fixed justify-center relative"
-            style={{ backgroundImage: `url(${bg_Img})` }}
+        <div
+            className="h-screen flex flex-col bg-cover bg-center bg-no-repeat bg-fixed justify-center relative"
+            style={{
+                backgroundImage: `url(${bg_Img})`,
+            }}
         >
             <div className="absolute inset-0 bg-black bg-opacity-80"></div>
 
             <div className="flex items-center justify-between mb-6 px-6 md:px-20 relative z-10">
                 <Link to="/">
-                    <div className="text-4xl sm:text-3xl font-bold text-white cursor-pointer">
+                    <div
+                        id="logo-style"
+                        className="text-4xl sm:text-3xl font-bold text-white cursor-pointer"
+                    >
                         FitHub
                     </div>
                 </Link>
@@ -66,32 +75,65 @@ const Register = () => {
 
             <div className="w-full sm:w-96 md:w-[420px] bg-[rgba(53,49,110,0.16)] p-6 sm:p-8 md:p-10 mx-auto relative z-10">
                 <h1 className="text-3xl sm:text-4xl font-semibold mb-6 text-center text-white">
-                    Sign Up
+                    SignUp
                 </h1>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {["name", "email", "password"].map((field) => (
-                        <div key={field}>
-                            <label className="block text-xl font-medium text-gray-300 capitalize">
-                                {field}
-                            </label>
-                            <input
-                                name={field}
-                                type={field === "password" ? "password" : "text"}
-                                value={formData[field]}
-                                onChange={handleChange}
-                                placeholder={`Enter ${field}...`}
-                                className="w-full h-12 bg-gray-600 text-white border-none outline-none rounded-sm text-lg px-4 py-2"
-                            />
-                        </div>
-                    ))}
+                    <div>
+                        <label
+                            htmlFor="name"
+                            className="block text-xl font-medium text-gray-300"
+                        >
+                            Name
+                        </label>
+                        <input
+                            name="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            type="text"
+                            placeholder="enter your name..."
+                            className="w-full h-12 bg-gray-600 text-white mb-3 border-none outline-none rounded-sm font-base text-lg px-4 py-2"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            htmlFor="email"
+                            className="block text-xl font-medium text-gray-300"
+                        >
+                            Email
+                        </label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="enter email..."
+                            name="email"
+                            className="w-full h-12 bg-gray-600 text-white mb-3 border-none outline-none rounded-sm font-base text-lg px-4 py-2"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            htmlFor="password"
+                            className="block text-xl font-medium text-gray-300"
+                        >
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="enter password..."
+                            name="password"
+                            className="w-full h-12 bg-gray-600 text-white mb-3 border-none outline-none rounded-sm font-base text-lg px-4 py-2"
+                        />
+                    </div>
                     <button
                         type="submit"
-                        disabled={loading}
-                        className="w-full p-4 bg-cyan-800 text-white rounded-md text-lg font-medium mt-2 cursor-pointer"
+                        className="w-full border-none outline-none p-4 bg-cyan-800 text-white rounded-md text-lg font-medium mt-2 cursor-pointer"
                     >
-                        {loading ? "Registering..." : "Submit"}
+                        Submit
                     </button>
                 </form>
+
             </div>
         </div>
     );
