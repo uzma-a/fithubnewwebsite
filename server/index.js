@@ -13,13 +13,7 @@ const mongoURI = process.env.MONGO_URI
 
 app.use(express.urlencoded({ extended: false }));
 
-app.use(
-  cors({
-      origin: "https://fit-hub-gym.vercel.app", // ✅ Ensure no trailing slash
-      methods: ["POST", "GET"], // Allow necessary HTTP methods
-      credentials: true, // If you're using cookies, authentication, etc.
-  })
-);
+app.use(cors());
 
 app.use(express.json());
 
