@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const MemberModel = require('./models/GymMember');
-const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -12,9 +11,17 @@ const app = express();
 const PORT = process.env.PORT;
 const mongoURI = process.env.MONGO_URI
 
-app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+
+app.use(
+  cors({
+      origin: "http://localhost:5173", // ✅ Ensure no trailing slash
+      methods: ["POST", "GET"], // Allow necessary HTTP methods
+      credentials: true, // If you're using cookies, authentication, etc.
+  })
+);
+
+app.use(express.json());
 
 // MongoDB connection
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -26,74 +33,30 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   });
 
 
-// Signup functionality
-
-app.post('/register', async (req, res) => {
-  const { name, email, password } = req.body;
-
-  if (!name || !email || !password) {
-      return res.status(400).json({ error: 'All fields are required.' });
-  }
-
+// Register Route
+app.post("/register", async (req, res) => {
   try {
-      // Check if user already exists
-      const existingUser = await MemberModel.findOne({ email });
-      if (existingUser) {
-          return res.status(400).json({ error: 'User already exists. Please login.' });
-      }
+    const { name, email, password } = req.body;
 
-      const newUser = new MemberModel({ name, email, password });
-
-      await newUser.save();
-      res.status(201).json({ message: 'Registration successful! Please login.' });
-  } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Internal server error.' });
-  }
-});
-
-
-// Razorpay Order Creation Route
-app.post("/order", async (req, res) => {
-  try {
-    const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID,
-      key_secret: process.env.RAZORPAY_SECRET,
-    });
-
-    const options = req.body;
-    const order = await razorpay.orders.create(options);
-
-    if (!order) {
-      return res.status(500).send("Error");
+    // Check if user already exists
+    const existingUser = await MemberModel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: "Email already exists" });
     }
 
-    res.json(order);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("Error");
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user
+    const newUser = new MemberModel({ name, email, password: hashedPassword });
+    await newUser.save();
+
+    res.json({ success: true, message: "User registered successfully" });
+  } catch (error) {
+    console.error("Error in registration:", error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-app.post("/order/validate", async (req, res) => {
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-    req.body;
 
-  const sha = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET);
-  //order_id + "|" + razorpay_payment_id
-  sha.update(`${razorpay_order_id}|${razorpay_payment_id}`);
-  const digest = sha.digest("hex");
-  if (digest !== razorpay_signature) {
-    return res.status(400).json({ msg: "Transaction is not legit!" });
-  }
-
-  res.json({
-    msg: "success",
-    orderId: razorpay_order_id,
-    paymentId: razorpay_payment_id,
-  });
-});
-
-app.listen(PORT, () => {
-  console.log("Listening on port", PORT);
-});
+app.listen(5001, () => console.log("Server running on port 5001"));
