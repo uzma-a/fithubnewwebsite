@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const MemberModel = require('./models/GymMember');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
@@ -28,6 +28,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 
 // Register Route
+
 app.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -38,7 +39,7 @@ app.post("/register", async (req, res) => {
       return res.status(400).json({ error: "Email already exists" });
     }
 
-    // Hash the password
+    // Hash the password using bcryptjs
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user
@@ -51,6 +52,7 @@ app.post("/register", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
 
 
 app.listen(5001, () => console.log("Server running on port 5001"));
