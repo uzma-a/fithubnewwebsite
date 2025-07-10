@@ -26,34 +26,57 @@ const ContactPage = () => {
 
   <ToastContainer />
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // Check if all fields are filled
-    const { name, email, subject, message, date, time } = formData;
+  const { name, email, subject, message, date, time } = formData;
 
-    if (!name || !email || !subject || !message || !date || !time) {
-      // Simple alert for missing fields
-      toast.error("Please fill the required field!")
-      return;
+  if (!name || !email || !subject || !message || !date || !time) {
+    toast.error("Please fill the required field!");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5001/api/book-appointment", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fullName: name,
+        email,
+        subject,
+        message,
+        appointmentDate: date,
+        appointmentTime: time,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      toast.success("Appointment booked successfully!");
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: '',
+          date: '',
+          time: '',
+        });
+      }, 3000);
+    } else {
+      toast.error(data.message || "Something went wrong!");
     }
+  } catch (error) {
+    console.error("Error booking appointment:", error);
+    toast.error("Failed to book appointment.");
+  }
+};
 
-    // Show success state
-    setIsSubmitted(true);
-
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: '',
-        date: '',
-        time: '',
-      });
-    }, 3000);
-  };
 
 
     if (isSubmitted) {
