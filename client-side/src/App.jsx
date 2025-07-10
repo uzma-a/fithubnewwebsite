@@ -17,6 +17,7 @@ import Loading from './Components/Loading/Loading';
 import Register from './Pages/Register';
 import axios from 'axios';
 import {Toaster} from 'react-hot-toast';
+import { ToastContainer } from 'react-toastify';
 import { UserContext, UserContextProvider } from '../context/userContext';
 import Dashboard from './Pages/Dashboard';
 
@@ -61,8 +62,6 @@ function App() {
                   <HeroSection />
                   <AboutSection />
                   <ServicesPage />
-                  <TrainersPage />
-                  <LearnMorePage />
                   <MembershipPlans />
                 </>
               }
