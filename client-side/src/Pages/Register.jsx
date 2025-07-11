@@ -36,7 +36,7 @@ const Register = () => {
 
         try {
             const response = await axios.post(
-                'https://fithub-backend-0vzs.onrender.com/register',
+                'http://localhost:5001/api/register',
                 { name, email, password }
             );
             const { data } = response;
