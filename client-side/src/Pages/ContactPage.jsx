@@ -5,6 +5,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const ContactPage = () => {
+
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -36,7 +39,7 @@ const ContactPage = () => {
   }
 
   try {
-    const response = await fetch("http://localhost:5001/api/book-appointment", {
+    const response = await axios.post (`${backendUrl}/api/book-appointment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

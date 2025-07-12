@@ -5,6 +5,9 @@ import bg_Img from "../assets/GymHeroBg.jpg";
 import axios from "axios";
 
 const Register = () => {
+
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -36,7 +39,7 @@ const Register = () => {
 
         try {
             const response = await axios.post(
-                'http://localhost:5001/api/register',
+                `${backendUrl}/api/register`,
                 { name, email, password }
             );
             const { data } = response;
