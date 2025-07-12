@@ -39,7 +39,7 @@ const Register = () => {
 
         try {
             const response = await axios.post(
-                ${backendUrl}/api/register,
+                `${backendUrl}/api/register`,
                 { name, email, password }
             );
             const { data } = response;
@@ -55,7 +55,6 @@ const Register = () => {
             console.error(error);
         }
     };
-   
 
     return (
         <div
