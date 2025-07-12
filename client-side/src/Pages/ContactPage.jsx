@@ -4,7 +4,6 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
-
 const ContactPage = () => {
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -20,6 +19,15 @@ const ContactPage = () => {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -31,19 +39,17 @@ const ContactPage = () => {
     }
 
     try {
-      const response = await axios.post(
-        `${backendUrl}/api/book-appointment`,
-        {
-          fullName: name,
-          email,
-          subject,
-          message,
-          appointmentDate: date,
-          appointmentTime: time,
-        }
-      );
+      const response = await axios.post(`${backendUrl}/api/book-appointment`, {
+        fullName: name,
+        email,
+        subject,
+        message,
+        appointmentDate: date,
+        appointmentTime: time,
+      });
 
-      const data = response.data;
+
+      const {data} = response;
 
       if (data.success) {
         toast.success("Appointment booked successfully!");
@@ -67,7 +73,6 @@ const ContactPage = () => {
       toast.error("Failed to book appointment.");
     }
   };
-
 
 
 
