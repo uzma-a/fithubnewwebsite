@@ -24,7 +24,6 @@ const ContactPage = () => {
     }));
   };
 
-  <ToastContainer />
 
   const handleSubmit = async (e) => {
   e.preventDefault();
