@@ -19,16 +19,7 @@ const ContactPage = () => {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleInputChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
-  };
-
-
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
   const { name, email, subject, message, date, time } = formData;
@@ -39,22 +30,19 @@ const ContactPage = () => {
   }
 
   try {
-    const response = await axios.post (`${backendUrl}/api/book-appointment`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    const response = await axios.post(
+      `${backendUrl}/api/book-appointment`,
+      {
         fullName: name,
         email,
         subject,
         message,
         appointmentDate: date,
         appointmentTime: time,
-      }),
-    });
+      }
+    );
 
-    const data = await response.json();
+    const data = response.data;
 
     if (data.success) {
       toast.success("Appointment booked successfully!");
@@ -78,6 +66,7 @@ const ContactPage = () => {
     toast.error("Failed to book appointment.");
   }
 };
+
 
 
 
