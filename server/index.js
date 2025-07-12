@@ -7,13 +7,14 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5001;
 const mongoURI = process.env.MONGO_URI;
+const frontendUrl = 'https://fithub-new-frontend.onrender.com' || 'http://localhost:5173';
 
 // Routes
 const registerRoute = require('./routes/registerRoute');
 const appointmentRoutes = require('./routes/appointmentRoutes');
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: [frontendUrl], credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
